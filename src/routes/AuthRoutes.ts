@@ -1,7 +1,7 @@
-import {Request, response, Response} from "express";
+import {Request, Response} from "express";
 import {Routes} from "./Routes";
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {body, param, query, validationResult} from 'express-validator';
+import {AuthController} from "../controllers/AuthController";
 
 export class AuthRoutes {
     index(request: Request, response: Response) {
@@ -26,12 +26,11 @@ export class AuthRoutes {
         const email = request.query['email']!.toString();
         const password = request.query['password']!.toString();
 
-        const auth = getAuth();
-        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        const result = await AuthController.login(email, password)
             .catch((error) => {
                 return response.status(500).send({'error': error.message});
             });
 
-        return response.send(userCredential);
+        return response.send(result);
     }
 }
