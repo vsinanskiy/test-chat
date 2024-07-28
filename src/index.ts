@@ -28,8 +28,8 @@ app.get("/status", (request: Request, response: Response) => {
     response.send(status);
 });
 
-app.get('/', routes.index)
 app.get('/auth/*', auth.index)
+app.get('/*', routes.index)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
